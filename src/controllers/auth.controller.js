@@ -5,7 +5,6 @@ import { db } from "../database/database.connection.js";
 export async function signUp(req, res){
     const { name, email, password } = req.body;
 
-    console.log("Entrou signUp")
     try{
         const user = await db.collection("users").findOne({ email });
         if(user){
