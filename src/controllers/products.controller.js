@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb"
 import { db } from "../database/database.connection.js"
 import dayjs from "dayjs"
 
@@ -38,4 +39,26 @@ export async function newOrder(req, res) {
     } catch (error) {
       res.status(500).send(error.message);
     }
+}
+
+export async function getOrders(req, res){
+    const token = req.headers.authorization.replace('Bearer ', '')
+
+    try{
+        const session = await db.collection('sessions').find({ token }).toArray()
+    
+        res.send(await db.collection('orders').find({ customerId: session[0].userId.toString() }).toArray())
+    }catch(err){
+        return res.status(500).send(err.message)
+    }   
+}
+
+export async function getOrder(req, res){
+    const orderId = req.params.OrderId
+
+    try{   
+        res.send(await db.collection('orders').find({ _id: new ObjectId(orderId) }).toArray())
+    }catch(err){
+        return res.status(500).send(err.message)
+    } 
 }
