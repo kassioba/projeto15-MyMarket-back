@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const mongoClient = new MongoClient("mongodb+srv://myMarketDataBase:MyMarket123@cluster0.dtmjw9v.mongodb.net/MyMarket?retryWrites=true&w=majority");
+const mongoClient = new MongoClient(process.env.DATABASE_URL);
 try {
     await mongoClient.connect();
     console.log("MongoDB conectado!");
